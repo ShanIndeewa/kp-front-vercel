@@ -15,7 +15,8 @@ export default function InputForm() {
     const router = useRouter();
     const { setChartData, setHoraryData, activeTab, setActiveTab } = useAppStore();
 
-    const [date, setDate] = useState("");
+    const today = new Date().toISOString().split("T")[0];
+    const [date, setDate] = useState(today);
     const [time, setTime] = useState("");
     const [locationKey, setLocationKey] = useState("");
     const [locationSearch, setLocationSearch] = useState("");
@@ -26,7 +27,9 @@ export default function InputForm() {
     const [timezone, setTimezone] = useState("5.5");
 
     const [horaryNumber, setHoraryNumber] = useState("");
-    const [horaryDate, setHoraryDate] = useState("");
+    const [horaryDate, setHoraryDate] = useState(today);
+    const [horaryTime, setHoraryTime] = useState("");
+    const [useHoraryTime, setUseHoraryTime] = useState(false);
     const [horaryLocation, setHoraryLocation] = useState("");
     const [horaryLocationSearch, setHoraryLocationSearch] = useState("");
     const [showHoraryDropdown, setShowHoraryDropdown] = useState(false);
@@ -66,6 +69,7 @@ export default function InputForm() {
             const result = await horaryMutation.mutateAsync({
                 horary_number: parseInt(horaryNumber),
                 date: horaryDate,
+                time: useHoraryTime && horaryTime ? horaryTime : undefined,
                 location: horaryLocation || undefined,
             });
             setHoraryData(result);
@@ -227,9 +231,32 @@ export default function InputForm() {
                             <input type="number" min={1} max={249} value={horaryNumber} onChange={(e) => setHoraryNumber(e.target.value)} placeholder="Enter 1 - 249" className="input-field" required />
                         </div>
 
-                        <div>
-                            <label style={labelStyle}><Calendar style={{ width: 14, height: 14 }} /> Query Date</label>
-                            <input type="date" value={horaryDate} onChange={(e) => setHoraryDate(e.target.value)} className="input-field" required />
+                        <div style={{ display: "grid", gridTemplateColumns: useHoraryTime ? "1fr 1fr" : "1fr", gap: 16 }}>
+                            <div>
+                                <label style={labelStyle}><Calendar style={{ width: 14, height: 14 }} /> Query Date</label>
+                                <input type="date" value={horaryDate} onChange={(e) => setHoraryDate(e.target.value)} className="input-field" required />
+                            </div>
+                            {useHoraryTime && (
+                                <div>
+                                    <label style={labelStyle}><Clock style={{ width: 14, height: 14 }} /> Query Time</label>
+                                    <input type="time" value={horaryTime} onChange={(e) => setHoraryTime(e.target.value)} className="input-field" required />
+                                </div>
+                            )}
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <button
+                                type="button"
+                                onClick={() => { setUseHoraryTime(!useHoraryTime); if (useHoraryTime) setHoraryTime(""); }}
+                                style={{
+                                    fontSize: 12, fontWeight: 500, padding: "6px 12px", borderRadius: 8,
+                                    border: "none", cursor: "pointer", transition: "all 0.2s",
+                                    background: useHoraryTime ? undefined : "transparent",
+                                }}
+                                className={useHoraryTime ? "toggle-active" : "toggle-inactive"}
+                            >
+                                <Clock style={{ width: 12, height: 12, display: "inline", marginRight: 4, verticalAlign: "middle" }} />
+                                {useHoraryTime ? "Custom Time Enabled" : "Set Custom Time (Optional)"}
+                            </button>
                         </div>
 
                         <div style={{ position: "relative" }}>
