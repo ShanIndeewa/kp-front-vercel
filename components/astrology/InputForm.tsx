@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock, MapPin, Hash, Compass, Search, Sparkles } from "lucide-react";
+import { Calendar, Clock, MapPin, Hash, Compass, Search, Book, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import GlassCard from "@/components/ui/GlassCard";
@@ -85,14 +85,14 @@ export default function InputForm() {
     };
 
     const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
-        { id: "birth", label: "Birth Chart", icon: <Sparkles style={{ width: 16, height: 16 }} /> },
-        { id: "horary", label: "Horary Chart", icon: <Hash style={{ width: 16, height: 16 }} /> },
+        { id: "birth", label: "Birth Chart", icon: <Compass style={{ width: 16, height: 16 }} /> },
+        { id: "horary", label: "Horary Chart", icon: <Book style={{ width: 16, height: 16 }} /> },
     ];
 
     return (
         <GlassCard className="w-full" style={{ maxWidth: 720, margin: "0 auto" }}>
             {/* Tabs */}
-            <div style={{ display: "flex", gap: 4, padding: 4, borderRadius: 12, background: "var(--bg-tertiary)", marginBottom: 24 }}>
+            <div style={{ display: "flex", gap: 0, padding: 0, borderRadius: 0, background: "var(--bg-tertiary)", marginBottom: 32, border: "1px solid var(--border-glass)" }}>
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
@@ -100,9 +100,11 @@ export default function InputForm() {
                         className={activeTab === tab.id ? "tab-active" : "tab-inactive"}
                         style={{
                             flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-                            gap: 8, padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 500,
-                            border: "none", cursor: "pointer", transition: "all 0.3s",
-                            background: activeTab === tab.id ? undefined : "transparent",
+                            gap: 8, padding: "14px 16px", borderRadius: 0, fontSize: 13, fontWeight: 700,
+                            border: "none", cursor: "pointer", transition: "all 0.2s",
+                            background: activeTab === tab.id ? "var(--accent-gold)" : "transparent",
+                            color: activeTab === tab.id ? "#111" : "var(--text-muted)",
+                            textTransform: "uppercase", letterSpacing: 1,
                         }}
                     >
                         {tab.icon}
@@ -138,18 +140,18 @@ export default function InputForm() {
                         </div>
 
                         {/* Location Toggle */}
-                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 0, border: "1px solid var(--border-glass)" }}>
                             <button
                                 type="button" onClick={() => setManualCoords(false)}
                                 className={!manualCoords ? "toggle-active" : "toggle-inactive"}
-                                style={{ fontSize: 12, fontWeight: 500, padding: "6px 12px", borderRadius: 8, border: "none", cursor: "pointer", transition: "all 0.2s", background: !manualCoords ? undefined : "transparent" }}
+                                style={{ flex: 1, fontSize: 11, fontWeight: 700, padding: "10px 12px", borderRadius: 0, border: "none", cursor: "pointer", transition: "all 0.2s", textTransform: "uppercase", letterSpacing: 1 }}
                             >
                                 Sri Lanka Location
                             </button>
                             <button
                                 type="button" onClick={() => setManualCoords(true)}
                                 className={manualCoords ? "toggle-active" : "toggle-inactive"}
-                                style={{ fontSize: 12, fontWeight: 500, padding: "6px 12px", borderRadius: 8, border: "none", cursor: "pointer", transition: "all 0.2s", background: manualCoords ? undefined : "transparent" }}
+                                style={{ flex: 1, fontSize: 11, fontWeight: 700, padding: "10px 12px", borderRadius: 0, border: "none", cursor: "pointer", transition: "all 0.2s", textTransform: "uppercase", letterSpacing: 1 }}
                             >
                                 Manual Coordinates
                             </button>
@@ -211,9 +213,9 @@ export default function InputForm() {
                             </p>
                         )}
 
-                        <Button type="submit" variant="primary" size="lg" className="w-full" loading={chartMutation.isPending}>
-                            <Sparkles style={{ width: 16, height: 16 }} />
-                            Calculate Birth Chart
+                        <Button type="submit" variant="gold" size="lg" className="w-full" loading={chartMutation.isPending}>
+                            GENERATE BIRTH CHART
+                            <ChevronRight style={{ width: 16, height: 16 }} />
                         </Button>
                     </motion.form>
                 ) : (
@@ -294,8 +296,8 @@ export default function InputForm() {
                         )}
 
                         <Button type="submit" variant="gold" size="lg" className="w-full" loading={horaryMutation.isPending}>
-                            <Hash style={{ width: 16, height: 16 }} />
-                            Calculate Horary Chart
+                            GENERATE HORARY CHART
+                            <ChevronRight style={{ width: 16, height: 16 }} />
                         </Button>
                     </motion.form>
                 )}

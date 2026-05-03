@@ -10,9 +10,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<string, React.CSSProperties> = {
     primary: {
-        background: "linear-gradient(135deg, #9333ea, #06b6d4)",
+        background: "var(--accent-purple)",
         color: "#ffffff",
-        boxShadow: "0 4px 15px rgba(147,51,234,0.25)",
     },
     secondary: {
         background: "var(--bg-tertiary)",
@@ -25,16 +24,16 @@ const variantStyles: Record<string, React.CSSProperties> = {
         border: "none",
     },
     gold: {
-        background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
+        background: "var(--accent-gold)",
         color: "#111827",
-        boxShadow: "0 4px 15px rgba(245,158,11,0.25)",
+        boxShadow: "0 0 15px var(--accent-gold-glow)",
     },
 };
 
 const sizeStyles: Record<string, React.CSSProperties> = {
-    sm: { padding: "6px 12px", fontSize: 12, gap: 6 },
-    md: { padding: "10px 20px", fontSize: 14, gap: 8 },
-    lg: { padding: "12px 28px", fontSize: 16, gap: 10 },
+    sm: { padding: "8px 20px", fontSize: 12, gap: 6 },
+    md: { padding: "12px 28px", fontSize: 13, gap: 8 },
+    lg: { padding: "14px 36px", fontSize: 15, gap: 10 },
 };
 
 export default function Button({
@@ -49,21 +48,26 @@ export default function Button({
 }: ButtonProps) {
     return (
         <button
-            className={className}
+            className={`${className} rounded-button`}
             disabled={disabled || loading}
             style={{
                 position: "relative",
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontWeight: 600, borderRadius: 12,
-                transition: "all 0.3s", cursor: disabled || loading ? "not-allowed" : "pointer",
+                fontWeight: 800, borderRadius: 999,
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", 
+                cursor: disabled || loading ? "not-allowed" : "pointer",
                 userSelect: "none", outline: "none", border: "none",
                 opacity: disabled || loading ? 0.5 : 1,
+                fontFamily: "var(--font-sans)",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
                 ...variantStyles[variant],
                 ...sizeStyles[size],
                 ...style,
             }}
             {...props}
         >
+
             {loading && (
                 <svg
                     style={{ animation: "spin 1s linear infinite", width: 16, height: 16 }}

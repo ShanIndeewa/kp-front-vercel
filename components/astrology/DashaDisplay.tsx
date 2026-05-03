@@ -143,16 +143,16 @@ function PeriodRow({
                     display: "flex",
                     alignItems: "center",
                     gap: 8,
-                    padding: `${level <= 1 ? 10 : 7}px 12px`,
+                    padding: `${level <= 1 ? 12 : 8}px 12px`,
                     paddingLeft: `${level * 20 + 12}px`,
-                    borderRadius: 6,
+                    borderRadius: 0,
                     textAlign: "left",
                     border: "none",
                     transition: "all 0.2s",
-                    background: expanded ? `rgba(139, 92, 246, ${0.08 - level * 0.015})` : "transparent",
+                    background: expanded ? "var(--bg-secondary)" : "transparent",
                     cursor: canExpand ? "pointer" : "default",
                     borderLeft: level > 0
-                        ? `2px solid color-mix(in srgb, ${levelColor} 35%, transparent)`
+                        ? `1px solid var(--border-glass)`
                         : "none",
                 }}
                 className="hover:bg-white/5"
@@ -175,10 +175,11 @@ function PeriodRow({
                 </span>
 
                 <span style={{
-                    fontSize: 9, textTransform: "uppercase", letterSpacing: 1, fontWeight: 600,
-                    padding: "2px 6px", borderRadius: 4, flexShrink: 0, whiteSpace: "nowrap",
+                    fontSize: 9, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700,
+                    padding: "3px 8px", borderRadius: 0, flexShrink: 0, whiteSpace: "nowrap",
                     color: levelColor,
-                    background: `color-mix(in srgb, ${levelColor} 15%, transparent)`,
+                    border: `1px solid color-mix(in srgb, ${levelColor} 30%, transparent)`,
+                    background: `color-mix(in srgb, ${levelColor} 5%, transparent)`,
                 }}>
                     {levelLabel}
                 </span>
@@ -239,12 +240,12 @@ function MahadashaRow({ entry }: { entry: MahadashaEntry }) {
                     display: "flex",
                     alignItems: "center",
                     gap: 8,
-                    padding: "10px 12px",
-                    borderRadius: 8,
+                    padding: "12px 12px",
+                    borderRadius: 0,
                     textAlign: "left",
                     border: "none",
                     transition: "all 0.2s",
-                    background: expanded ? "rgba(139, 92, 246, 0.08)" : "transparent",
+                    background: expanded ? "var(--bg-secondary)" : "transparent",
                     cursor: hasChildren ? "pointer" : "default",
                 }}
                 className="hover:bg-white/5"
@@ -267,10 +268,11 @@ function MahadashaRow({ entry }: { entry: MahadashaEntry }) {
                 </span>
 
                 <span style={{
-                    fontSize: 9, textTransform: "uppercase", letterSpacing: 1.2, fontWeight: 600,
-                    padding: "2px 6px", borderRadius: 4, flexShrink: 0, whiteSpace: "nowrap",
+                    fontSize: 9, textTransform: "uppercase", letterSpacing: 1.2, fontWeight: 700,
+                    padding: "3px 8px", borderRadius: 0, flexShrink: 0, whiteSpace: "nowrap",
                     color: "var(--accent-gold)",
-                    background: "color-mix(in srgb, var(--accent-gold) 15%, transparent)",
+                    border: "1px solid var(--accent-gold-30)",
+                    background: "var(--accent-gold-10)",
                 }}>
                     Maha Dasha
                 </span>
@@ -382,9 +384,9 @@ function CurrentDashaBadge({ current }: { current: CurrentDashaInfo }) {
                 {parts.map((p) => (
                     <div key={p.label} style={{
                         display: "flex", alignItems: "center", gap: 8,
-                        padding: "6px 10px", borderRadius: 8,
-                        background: `color-mix(in srgb, ${p.color} 8%, transparent)`,
-                        border: `1px solid color-mix(in srgb, ${p.color} 20%, transparent)`,
+                        padding: "8px 12px", borderRadius: 0,
+                        background: "var(--bg-secondary)",
+                        border: `1px solid color-mix(in srgb, ${p.color} 30%, transparent)`,
                     }}>
                         <span style={{ fontSize: 16, color: getPlanetColor(p.planet) }}>
                             {getPlanetSymbol(p.planet)}
@@ -417,8 +419,8 @@ export default function DashaDisplay({ dasha }: DashaDisplayProps) {
     if (!dasha || (typeof dasha === "object" && Object.keys(dasha).length === 0)) {
         return (
             <GlassCard noPadding>
-                <div style={{ padding: 24, textAlign: "center" }}>
-                    <h3 className="gradient-text" style={{ fontSize: 18, fontWeight: 700, fontFamily: "'Playfair Display', serif", marginBottom: 8 }}>
+                <div style={{ padding: 32, textAlign: "center" }}>
+                    <h3 style={{ fontSize: 18, fontWeight: 800, color: "var(--accent-gold)", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>
                         Vimshottari Dasha
                     </h3>
                     <p style={{ fontSize: 13, color: "var(--text-muted)" }}>
@@ -457,7 +459,7 @@ export default function DashaDisplay({ dasha }: DashaDisplayProps) {
             <div style={{ padding: "16px 16px 12px", borderBottom: "1px solid var(--border-glass)" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
                     <div>
-                        <h3 className="gradient-text" style={{ fontSize: 18, fontWeight: 700, fontFamily: "'Playfair Display', serif" }}>
+                        <h3 style={{ fontSize: 18, fontWeight: 800, color: "var(--accent-gold)", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", letterSpacing: 1 }}>
                             Vimshottari Dasha
                         </h3>
                         <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4 }}>
@@ -504,7 +506,7 @@ export default function DashaDisplay({ dasha }: DashaDisplayProps) {
             <div style={{ padding: "8px 16px", display: "flex", gap: 12, flexWrap: "wrap", borderBottom: "1px solid var(--border-glass)" }}>
                 {LEVEL_LABELS.map((label, i) => (
                     <div key={label} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 10, color: "var(--text-muted)" }}>
-                        <div style={{ width: 8, height: 8, borderRadius: 2, background: LEVEL_COLORS[i] }} />
+                        <div style={{ width: 8, height: 8, borderRadius: 0, background: LEVEL_COLORS[i] }} />
                         <span>{label}</span>
                     </div>
                 ))}

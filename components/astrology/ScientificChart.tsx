@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ZoomIn, ZoomOut, RotateCcw, Search } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Search, Compass } from 'lucide-react';
 import type { PlanetPosition, HouseCusp, AscendantInfo } from '@/types/api';
 import {
   ZODIAC_SIGNS,
@@ -333,12 +333,12 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
         <div className="text-center">
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-            className="text-6xl mb-4"
+            transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+            className="text-amber-500/40 mb-4"
           >
-            🌌
+            <Compass size={64} />
           </motion.div>
-          <p className="text-purple-400/60">Calculate a chart to view</p>
+          <p className="theme-text-muted">Calculating Celestial Chart...</p>
         </div>
       </div>
     );
@@ -358,28 +358,28 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
       <div className="absolute top-4 right-4 z-20 flex flex-col gap-2">
         <button
           onClick={() => setZoomLevel(Math.min(zoomLevel + 0.2, 2.5))}
-          className="p-2 bg-purple-600/80 hover:bg-purple-500 rounded-lg text-white transition-colors"
+          className="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-none text-white transition-colors"
           title="Zoom In"
         >
           <ZoomIn size={18} />
         </button>
         <button
           onClick={() => setZoomLevel(Math.max(zoomLevel - 0.2, 0.5))}
-          className="p-2 bg-purple-600/80 hover:bg-purple-500 rounded-lg text-white transition-colors"
+          className="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-none text-white transition-colors"
           title="Zoom Out"
         >
           <ZoomOut size={18} />
         </button>
         <button
           onClick={() => setZoomLevel(1)}
-          className="p-2 bg-purple-600/80 hover:bg-purple-500 rounded-lg text-white transition-colors"
+          className="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-none text-white transition-colors"
           title="Reset Zoom"
         >
           <RotateCcw size={18} />
         </button>
         <button
           onClick={() => setShowMagnifier(!showMagnifier)}
-          className={`p-2 rounded-lg text-white transition-colors ${showMagnifier ? 'bg-amber-500' : 'bg-purple-600/80 hover:bg-purple-500'}`}
+          className={`p-2 rounded-none text-white transition-colors ${showMagnifier ? 'bg-amber-600' : 'bg-slate-800 hover:bg-slate-700 border border-slate-600'}`}
           title="Toggle Magnifier"
         >
           <Search size={18} />
@@ -407,42 +407,12 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
             width={size}
             height={size}
             className="max-w-full max-h-full"
-            style={{ filter: 'drop-shadow(0 0 30px rgba(139, 92, 246, 0.3))' }}
           >
             <defs>
-              {/* Gradients */}
               <radialGradient id="chartBgGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#1e1b4b" />
-                <stop offset="60%" stopColor="#0f0a1e" />
-                <stop offset="100%" stopColor="#030014" />
+                <stop offset="0%" stopColor="#0a0c12" />
+                <stop offset="100%" stopColor="#0f172a" />
               </radialGradient>
-              
-              <linearGradient id="rashiRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.4" />
-                <stop offset="50%" stopColor="#a855f7" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.4" />
-              </linearGradient>
-
-              <linearGradient id="nakshatraRingGrad">
-                <stop offset="0%" stopColor="#2563eb" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.2" />
-              </linearGradient>
-
-              <filter id="glowEffect">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-
-              <filter id="planetGlow">
-                <feGaussianBlur stdDeviation="2" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
             </defs>
 
             {/* Background */}
@@ -466,7 +436,7 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
               cy={center} 
               r={outerRadius - subLordRingWidth - nakshatraRingWidth / 2} 
               fill="none" 
-              stroke="url(#nakshatraRingGrad)" 
+              stroke="#1e293b" 
               strokeWidth={nakshatraRingWidth}
             />
             
@@ -510,7 +480,7 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
               cy={center} 
               r={outerRadius - subLordRingWidth - nakshatraRingWidth - rashiRingWidth / 2} 
               fill="none" 
-              stroke="url(#rashiRingGrad)" 
+              stroke="#0f172a" 
               strokeWidth={rashiRingWidth}
             />
 
@@ -596,33 +566,20 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
               
               return (
                 <g>
-                  {/* Glowing golden fill for Lagna Bhava */}
-                  <defs>
-                    <radialGradient id="lagnaGlow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.35" />
-                      <stop offset="60%" stopColor="#f59e0b" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#d97706" stopOpacity="0.1" />
-                    </radialGradient>
-                    <filter id="lagnaBlur">
-                      <feGaussianBlur stdDeviation="4" />
-                    </filter>
-                  </defs>
-                  
-                  {/* Outer glow effect */}
                   <path 
                     d={pathD} 
-                    fill="#fbbf24" 
-                    fillOpacity="0.15"
-                    filter="url(#lagnaBlur)"
+                    fill="var(--accent-gold)" 
+                    fillOpacity="0.08"
                   />
                   
                   {/* Main highlight */}
                   <path 
                     d={pathD} 
-                    fill="url(#lagnaGlow)"
-                    stroke="#fbbf24"
-                    strokeWidth="2"
-                    strokeOpacity="0.6"
+                    fill="var(--accent-gold)"
+                    fillOpacity="0.15"
+                    stroke="var(--accent-gold)"
+                    strokeWidth="1.5"
+                    strokeOpacity="0.5"
                   />
                   
                   {/* Lagna label in the middle of the bhava */}
@@ -636,12 +593,13 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
                       <text
                         x={lx}
                         y={ly}
-                        fill="#fbbf24"
+                        fill="var(--accent-gold)"
                         fontSize="9"
                         fontWeight="bold"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        opacity="0.8"
+                        opacity="0.6"
+                        style={{ letterSpacing: 1 }}
                       >
                         LAGNA
                       </text>
@@ -669,17 +627,15 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
               
               return (
                 <g key={`cusp-${cusp.house}`}>
-                  {/* Extra glow for Lagna cusp line */}
                   {isLagna && (
                     <line
                       x1={cusp.x1}
                       y1={cusp.y1}
                       x2={cusp.x2}
                       y2={cusp.y2}
-                      stroke="#fbbf24"
-                      strokeWidth="6"
-                      strokeOpacity="0.3"
-                      filter="url(#lagnaBlur)"
+                      stroke="var(--accent-gold)"
+                      strokeWidth="4"
+                      strokeOpacity="0.1"
                     />
                   )}
                   <line
@@ -728,10 +684,9 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
                     cy={planet.y}
                     r={isAsc ? 12 : 16}
                     fill={planet.color}
-                    fillOpacity={0.15}
+                    fillOpacity={0.1}
                     stroke={planet.color}
-                    strokeWidth={hoveredItem === planet.name ? 3 : 2}
-                    filter={hoveredItem === planet.name ? 'url(#planetGlow)' : undefined}
+                    strokeWidth={hoveredItem === planet.name ? 2.5 : 1.5}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, delay: idx * 0.05 }}
@@ -769,24 +724,17 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
               cx={center}
               cy={center}
               r={12}
-              fill="#fbbf24"
-              fillOpacity="0.9"
-              animate={{ 
-                scale: [1, 1.15, 1],
-                opacity: [0.9, 1, 0.9]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
+              fill="var(--accent-gold)"
+              fillOpacity="0.4"
+              stroke="var(--accent-gold)"
+              strokeWidth="1"
             />
             <text
               x={center}
               y={center}
-              fill="#0c0a1d"
-              fontSize="8"
-              fontWeight="bold"
+              fill="var(--accent-gold)"
+              fontSize="7"
+              fontWeight="900"
               textAnchor="middle"
               dominantBaseline="middle"
             >
@@ -794,10 +742,10 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
             </text>
 
             {/* TOP indicator for Lagna position */}
-            <g transform={`translate(${center}, 20)`}>
-              <polygon points="0,-8 6,4 -6,4" fill="#fbbf24" />
-              <text y="16" fill="#fbbf24" fontSize="10" fontWeight="bold" textAnchor="middle">
-                ↑ LAGNA
+            <g transform={`translate(${center}, 25)`}>
+              <polygon points="0,-6 4,2 -4,2" fill="var(--accent-gold)" />
+              <text y="14" fill="var(--accent-gold)" fontSize="9" fontWeight="bold" textAnchor="middle" style={{ letterSpacing: 1 }}>
+                ASCENDANT
               </text>
             </g>
 

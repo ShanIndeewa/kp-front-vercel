@@ -3,17 +3,17 @@ import "./globals.css";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "KP Astrology — Krishnamurti Paddhati Calculator",
+  title: "PanAstro — Professional KP Astrology System",
   description:
-    "Premium KP Astrology dashboard with birth chart and horary calculations powered by sub-lord theory. Experience precision Jyotish with a modern cosmic interface.",
+    "Premium KP Astrology system with high-precision birth chart and horary calculations. Experience traditional sub-lord theory with a modern editorial interface.",
   keywords: [
+    "PanAstro",
     "KP Astrology",
     "Krishnamurti Paddhati",
+    "Precision Astrology",
     "Birth Chart",
     "Horary",
-    "Jyotish",
     "Sub Lord",
-    "Vimshottari Dasha",
   ],
 };
 
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="cosmic" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

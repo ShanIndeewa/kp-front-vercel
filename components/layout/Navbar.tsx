@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Sparkles, Menu, X, Star } from "lucide-react";
+import { Compass, Menu, X, ChevronRight } from "lucide-react";
 import ThemeSelector from "@/components/ui/ThemeSelector";
 import Link from "next/link";
 
@@ -34,33 +34,34 @@ export default function Navbar() {
             <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 72 }}>
                     {/* Logo */}
-                    <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+                    <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
                         <div
                             style={{
-                                width: 40, height: 40, borderRadius: 12,
-                                background: "linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))",
+                                width: 36, height: 36, borderRadius: "50%",
+                                background: "var(--accent-gold)",
                                 display: "flex", alignItems: "center", justifyContent: "center",
-                                boxShadow: "0 4px 15px rgba(139,92,246,0.25)",
+                                boxShadow: "0 0 20px var(--accent-gold-glow)",
                             }}
                         >
-                            <Sparkles style={{ width: 20, height: 20, color: "#fff" }} />
+                            <Compass style={{ width: 18, height: 18, color: "#111" }} />
                         </div>
-                        <span className="theme-text" style={{ fontSize: 18, fontWeight: 700, letterSpacing: -0.5 }}>
-                            KP<span className="gradient-text">Astro</span>
+                        <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.5px", color: "white", fontFamily: "var(--font-serif)" }}>
+                            Pan<span className="gradient-text-gold">Astro</span>
                         </span>
                     </Link>
 
                     {/* Desktop Links */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 4 }} className="hidden md:flex">
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }} className="hidden md:flex">
                         {NAV_LINKS.map((link) => (
                             <Link
                                 key={link.label}
                                 href={link.href}
-                                className="theme-text-2"
+                                className="theme-text-2 hover:text-white"
                                 style={{
-                                    padding: "8px 16px", fontSize: 14, fontWeight: 500,
-                                    borderRadius: 8, textDecoration: "none",
-                                    transition: "all 0.2s",
+                                    padding: "8px 12px", fontSize: 13, fontWeight: 600,
+                                    textTransform: "uppercase", letterSpacing: "1px",
+                                    textDecoration: "none",
+                                    transition: "all 0.3s",
                                 }}
                             >
                                 {link.label}
@@ -69,29 +70,31 @@ export default function Navbar() {
                     </div>
 
                     {/* Right */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <ThemeSelector />
+                    <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                        <div className="hidden sm:block">
+                            <ThemeSelector />
+                        </div>
 
                         <Link
                             href="#dashboard"
-                            className="hidden sm:inline-flex"
+                            className="hidden sm:inline-flex rounded-button pulse-gold"
                             style={{
                                 display: "inline-flex", alignItems: "center", gap: 8,
-                                padding: "10px 20px", borderRadius: 12, fontSize: 14, fontWeight: 600,
-                                background: "linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))",
-                                color: "#fff", textDecoration: "none",
-                                boxShadow: "0 4px 15px rgba(139,92,246,0.3)",
+                                padding: "8px 20px", fontSize: 13, fontWeight: 700,
+                                background: "var(--accent-gold)",
+                                color: "#111", textDecoration: "none",
                                 transition: "all 0.3s",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.5px"
                             }}
                         >
-                            <Star style={{ width: 14, height: 14 }} />
                             Get Started
                         </Link>
 
                         <button
                             onClick={() => setMobileOpen(!mobileOpen)}
                             className="md:hidden theme-text-2"
-                            style={{ padding: 8, borderRadius: 8, background: "transparent", border: "none", cursor: "pointer" }}
+                            style={{ padding: 8, borderRadius: 0, background: "transparent", border: "none", cursor: "pointer" }}
                             aria-label="Toggle menu"
                         >
                             {mobileOpen ? <X style={{ width: 20, height: 20 }} /> : <Menu style={{ width: 20, height: 20 }} />}
@@ -106,7 +109,7 @@ export default function Navbar() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    style={{ background: "var(--nav-bg)", backdropFilter: "blur(20px)", borderTop: "1px solid var(--border-glass)" }}
+                    style={{ background: "var(--nav-bg)", borderTop: "1px solid var(--border-glass)" }}
                     className="md:hidden"
                 >
                     <div style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 4 }}>
@@ -118,7 +121,7 @@ export default function Navbar() {
                                 className="theme-text-2"
                                 style={{
                                     padding: "10px 12px", fontSize: 14, fontWeight: 500,
-                                    borderRadius: 8, textDecoration: "none", display: "block",
+                                    borderRadius: 0, textDecoration: "none", display: "block",
                                 }}
                             >
                                 {link.label}
@@ -129,9 +132,9 @@ export default function Navbar() {
                             onClick={() => setMobileOpen(false)}
                             style={{
                                 display: "block", marginTop: 12, textAlign: "center",
-                                padding: "10px 0", borderRadius: 12, fontSize: 14, fontWeight: 600,
-                                background: "linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))",
-                                color: "#fff", textDecoration: "none",
+                                padding: "12px 0", borderRadius: 0, fontSize: 14, fontWeight: 700,
+                                background: "var(--accent-gold)",
+                                color: "#111", textDecoration: "none",
                             }}
                         >
                             Get Started
@@ -142,3 +145,4 @@ export default function Navbar() {
         </motion.nav>
     );
 }
+
