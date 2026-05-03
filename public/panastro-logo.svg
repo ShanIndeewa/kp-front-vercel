@@ -1,0 +1,9 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon Part -->
+  <circle cx="30" cy="30" r="25" fill="#B4945C"/>
+  <path d="M30 15L33 27H45L35 34L39 46L30 39L21 46L25 34L15 27H27L30 15Z" fill="#111111"/>
+  
+  <!-- Text Part -->
+  <text x="65" y="40" fill="white" style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800;">Pan</text>
+  <text x="110" y="40" fill="#B4945C" style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800;">Astro</text>
+</svg>
