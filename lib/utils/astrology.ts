@@ -144,3 +144,20 @@ export function getPlanetSymbol(name: string): string {
 export function getPlanetAbbr(name: string): string {
     return PLANET_META[name]?.abbr ?? name.substring(0, 2);
 }
+
+// ========== KP LEVELS ==========
+
+import type { KpLevels } from "@/types/api";
+
+/** Multi-line tooltip text describing the Sign > Star > Sub > Sub-Sub division of a point. */
+export function formatLevelsTitle(levels?: KpLevels | null): string | undefined {
+    if (!levels) return undefined;
+    const row = (label: string, l: KpLevels["sign"]) =>
+        `${label}: ${l.name ? `${l.name} / ` : ""}${l.lord}  (${l.start_dms} - ${l.end_dms})`;
+    return [
+        row("Sign", levels.sign),
+        row("Star", levels.star),
+        row("Sub", levels.sub),
+        row("Sub-Sub", levels.sub_sub),
+    ].join("\n");
+}

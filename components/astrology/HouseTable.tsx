@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
 import type { HouseCusp } from "@/types/api";
-import { getPlanetColor } from "@/lib/utils/astrology";
+import { getPlanetColor, formatLevelsTitle } from "@/lib/utils/astrology";
 
 interface HouseTableProps {
     houses: HouseCusp[];
@@ -31,6 +31,7 @@ export default function HouseTable({ houses }: HouseTableProps) {
                             <th>Sign Lord</th>
                             <th>Star Lord</th>
                             <th>Sub Lord</th>
+                            <th>Sub-Sub</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,6 +87,17 @@ export default function HouseTable({ houses }: HouseTableProps) {
                                     }}>
                                         {h.sub_lord}
                                     </span>
+                                </td>
+                                <td title={formatLevelsTitle(h.levels)}>
+                                    {h.sub_sub_lord ? (
+                                        <span style={{
+                                            fontSize: 12, padding: "2px 8px", borderRadius: 999, fontWeight: 500,
+                                            background: `${getPlanetColor(h.sub_sub_lord)}20`,
+                                            color: getPlanetColor(h.sub_sub_lord),
+                                        }}>
+                                            {h.sub_sub_lord}
+                                        </span>
+                                    ) : "—"}
                                 </td>
                             </motion.tr>
                         ))}

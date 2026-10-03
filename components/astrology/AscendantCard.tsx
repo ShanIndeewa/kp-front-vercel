@@ -64,7 +64,7 @@ export default function AscendantCard({ ascendant, ayanamsa, location, date, tim
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--text-muted)" }}>
                     <Star style={{ width: 14, height: 14 }} />
-                    <span>{date} at {time} • Ayanamsa: {ayanamsa.dms}</span>
+                    <span>{date} at {time} • Ayanamsa: {ayanamsa.dms}{ayanamsa.type ? ` (${ayanamsa.type})` : ""}</span>
                 </div>
             </div>
         </GlassCard>

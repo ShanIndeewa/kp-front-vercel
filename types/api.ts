@@ -1,5 +1,13 @@
 // ========== REQUEST TYPES ==========
 
+export type AyanamsaType = 'old' | 'new' | 'khullar' | 'manual';
+
+export const AYANAMSA_OPTIONS: { value: AyanamsaType; label: string }[] = [
+    { value: 'new', label: 'KP New (Balachandran)' },
+    { value: 'old', label: 'KP Old (KSK)' },
+    { value: 'khullar', label: 'KP Khullar' },
+];
+
 export interface CalculationRequest {
     date: string; // YYYY-MM-DD
     time: string; // HH:MM (24h)
@@ -7,7 +15,7 @@ export interface CalculationRequest {
     longitude?: number | null;
     timezone?: number | null; // default 5.5
     location?: string | null; // e.g. 'colombo'
-    ayanamsa_type?: string | null; // 'old' | 'new' | 'manual'
+    ayanamsa_type?: AyanamsaType | null;
     manual_ayanamsa?: number | null;
 }
 
@@ -19,11 +27,28 @@ export interface HoraryRequest {
     longitude?: number | null;
     timezone?: number | null;
     location?: string | null;
-    ayanamsa_type?: string | null;
+    ayanamsa_type?: AyanamsaType | null;
     manual_ayanamsa?: number | null;
 }
 
 // ========== RESPONSE TYPES ==========
+
+/** One level of the KP division (sign / star / sub / sub-sub) a point falls in. */
+export interface KpLevel {
+    name?: string; // sign and star levels only
+    lord: string;
+    start: number; // absolute sidereal degrees
+    end: number;
+    start_dms: string;
+    end_dms: string;
+}
+
+export interface KpLevels {
+    sign: KpLevel;
+    star: KpLevel;
+    sub: KpLevel;
+    sub_sub: KpLevel;
+}
 
 export interface PlanetPosition {
     name: string;
@@ -36,6 +61,7 @@ export interface PlanetPosition {
     sub_lord: string;
     sub_sub_lord?: string | null;
     pada: number;
+    levels?: KpLevels | null;
     retrograde?: boolean;
 }
 
@@ -51,6 +77,7 @@ export interface HouseCusp {
     sub_lord: string;
     sub_sub_lord?: string | null;
     pada: number;
+    levels?: KpLevels | null;
 }
 
 export interface AscendantInfo {

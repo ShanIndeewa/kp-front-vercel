@@ -10,7 +10,7 @@ const FEATURES = [
   { icon: Target, title: "Sub-Lord Precision", desc: "KP system's unique sub-lord theory for pinpoint accuracy in predictions.", iconClass: "icon-bg-purple" },
   { icon: Compass, title: "Horary Charts", desc: "Instant horary analysis with 249 sub-division system for specific questions.", iconClass: "icon-bg-cyan" },
   { icon: Clock, title: "Vimshottari Dasha", desc: "Complete dasha timeline with Maha, Bhukti, Antara, and Sukshma periods.", iconClass: "icon-bg-amber" },
-  { icon: Shield, title: "Standard Ayanamsa", desc: "Balachandran formula for the most accurate ayanamsa calculations.", iconClass: "icon-bg-rose" },
+  { icon: Shield, title: "Standard Ayanamsa", desc: "KP New (Balachandran), KP Old (KSK) and Khullar ayanamsa, selectable per chart.", iconClass: "icon-bg-rose" },
   { icon: BarChart3, title: "House Analysis", desc: "Placidus house system with detailed cusp positions and lords.", iconClass: "icon-bg-emerald" },
   { icon: FileText, title: "Instant Reports", desc: "Lightning-fast calculations powered by Swiss Ephemeris engine.", iconClass: "icon-bg-violet" },
 ];

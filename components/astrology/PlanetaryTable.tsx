@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
 import type { PlanetPosition } from "@/types/api";
-import { getPlanetColor, getPlanetSymbol } from "@/lib/utils/astrology";
+import { getPlanetColor, getPlanetSymbol, formatLevelsTitle } from "@/lib/utils/astrology";
 
 interface PlanetaryTableProps {
     planets: PlanetPosition[];
@@ -84,7 +84,7 @@ export default function PlanetaryTable({ planets }: PlanetaryTableProps) {
                                         {p.sub_lord}
                                     </span>
                                 </td>
-                                <td style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500 }}>
+                                <td title={formatLevelsTitle(p.levels)} style={{ fontSize: 12, fontWeight: 600, color: p.sub_sub_lord ? getPlanetColor(p.sub_sub_lord) : "var(--text-muted)" }}>
                                     {p.sub_sub_lord || "—"}
                                 </td>
                                 <td>

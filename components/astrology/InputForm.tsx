@@ -2,12 +2,13 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock, MapPin, Hash, Compass, Search, Book, ChevronRight } from "lucide-react";
+import { Calendar, Clock, MapPin, Hash, Compass, Search, Book, ChevronRight, Orbit } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import GlassCard from "@/components/ui/GlassCard";
 import { useLocations, useCalculateChart, useCalculateHorary } from "@/lib/api/hooks";
 import { useAppStore } from "@/lib/store";
+import { AYANAMSA_OPTIONS, type AyanamsaType } from "@/types/api";
 
 type TabId = "birth" | "horary";
 
@@ -25,6 +26,7 @@ export default function InputForm() {
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [timezone, setTimezone] = useState("5.5");
+    const [ayanamsaType, setAyanamsaType] = useState<AyanamsaType>("new");
 
     const [horaryNumber, setHoraryNumber] = useState("");
     const [horaryDate, setHoraryDate] = useState(today);
@@ -56,6 +58,7 @@ export default function InputForm() {
                 latitude: manualCoords ? parseFloat(latitude) : undefined,
                 longitude: manualCoords ? parseFloat(longitude) : undefined,
                 timezone: manualCoords ? parseFloat(timezone) : undefined,
+                ayanamsa_type: ayanamsaType,
             });
             setChartData(result);
             setHoraryData(null);
@@ -71,6 +74,7 @@ export default function InputForm() {
                 date: horaryDate,
                 time: useHoraryTime && horaryTime ? horaryTime : undefined,
                 location: horaryLocation || undefined,
+                ayanamsa_type: ayanamsaType,
             });
             setHoraryData(result);
             setChartData(null);
@@ -207,6 +211,15 @@ export default function InputForm() {
                             </div>
                         )}
 
+                        <div>
+                            <label style={labelStyle}><Orbit style={{ width: 14, height: 14 }} /> Ayanamsa</label>
+                            <select value={ayanamsaType} onChange={(e) => setAyanamsaType(e.target.value as AyanamsaType)} className="input-field">
+                                {AYANAMSA_OPTIONS.map((o) => (
+                                    <option key={o.value} value={o.value}>{o.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
                         {chartMutation.isError && (
                             <p style={{ fontSize: 14, color: "#f87171", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 8, padding: "8px 12px" }}>
                                 {chartMutation.error.message}
@@ -287,6 +300,15 @@ export default function InputForm() {
                                     ))}
                                 </div>
                             )}
+                        </div>
+
+                        <div>
+                            <label style={labelStyle}><Orbit style={{ width: 14, height: 14 }} /> Ayanamsa</label>
+                            <select value={ayanamsaType} onChange={(e) => setAyanamsaType(e.target.value as AyanamsaType)} className="input-field">
+                                {AYANAMSA_OPTIONS.map((o) => (
+                                    <option key={o.value} value={o.value}>{o.label}</option>
+                                ))}
+                            </select>
                         </div>
 
                         {horaryMutation.isError && (
