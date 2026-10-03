@@ -3,6 +3,7 @@ import type {
     CalculationResponse,
     HoraryRequest,
     HoraryResponse,
+    GeocodeResponse,
     LocationListResponse,
 } from "@/types/api";
 
@@ -40,4 +41,15 @@ export async function calculateHorary(
 
 export async function getLocations(): Promise<LocationListResponse> {
     return fetchJSON<LocationListResponse>(`${BASE}/locations`);
+}
+
+export async function geocodePlace(
+    q: string,
+    date?: string,
+    time?: string
+): Promise<GeocodeResponse> {
+    const params = new URLSearchParams({ q });
+    if (date) params.set("date", date);
+    if (time) params.set("time", time);
+    return fetchJSON<GeocodeResponse>(`${BASE}/geocode?${params}`);
 }

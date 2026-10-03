@@ -13,8 +13,9 @@ export interface CalculationRequest {
     time: string; // HH:MM (24h)
     latitude?: number | null;
     longitude?: number | null;
-    timezone?: number | null; // default 5.5
+    timezone?: number | null; // omit to auto-detect from coordinates
     location?: string | null; // e.g. 'colombo'
+    place?: string | null; // any place name, geocoded by the backend
     ayanamsa_type?: AyanamsaType | null;
     manual_ayanamsa?: number | null;
 }
@@ -27,6 +28,7 @@ export interface HoraryRequest {
     longitude?: number | null;
     timezone?: number | null;
     location?: string | null;
+    place?: string | null;
     ayanamsa_type?: AyanamsaType | null;
     manual_ayanamsa?: number | null;
 }
@@ -102,6 +104,7 @@ export interface LocationUsed {
     latitude: number;
     longitude: number;
     timezone: number;
+    timezone_name?: string | null;
 }
 
 export interface LocationInfo {
@@ -109,6 +112,15 @@ export interface LocationInfo {
     name: string;
     latitude: number;
     longitude: number;
+}
+
+export interface GeocodeResponse {
+    success: boolean;
+    name: string;
+    latitude: number;
+    longitude: number;
+    timezone: number;
+    timezone_name: string;
 }
 
 export interface LocationListResponse {

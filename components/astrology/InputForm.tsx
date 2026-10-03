@@ -22,10 +22,11 @@ export default function InputForm() {
     const [locationKey, setLocationKey] = useState("");
     const [locationSearch, setLocationSearch] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
-    const [manualCoords, setManualCoords] = useState(false);
+    const [locMode, setLocMode] = useState<"sl" | "place" | "manual">("sl");
+    const [place, setPlace] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
-    const [timezone, setTimezone] = useState("5.5");
+    const [timezone, setTimezone] = useState(""); // empty = auto-detect
     const [ayanamsaType, setAyanamsaType] = useState<AyanamsaType>("new");
 
     const [horaryNumber, setHoraryNumber] = useState("");
@@ -54,10 +55,11 @@ export default function InputForm() {
         try {
             const result = await chartMutation.mutateAsync({
                 date, time,
-                location: manualCoords ? undefined : locationKey || undefined,
-                latitude: manualCoords ? parseFloat(latitude) : undefined,
-                longitude: manualCoords ? parseFloat(longitude) : undefined,
-                timezone: manualCoords ? parseFloat(timezone) : undefined,
+                location: locMode === "sl" ? locationKey || undefined : undefined,
+                place: locMode === "place" ? place.trim() || undefined : undefined,
+                latitude: locMode === "manual" ? parseFloat(latitude) : undefined,
+                longitude: locMode === "manual" ? parseFloat(longitude) : undefined,
+                timezone: locMode === "manual" && timezone !== "" ? parseFloat(timezone) : undefined,
                 ayanamsa_type: ayanamsaType,
             });
             setChartData(result);
@@ -146,22 +148,29 @@ export default function InputForm() {
                         {/* Location Toggle */}
                         <div style={{ display: "flex", alignItems: "center", gap: 0, border: "1px solid var(--border-glass)" }}>
                             <button
-                                type="button" onClick={() => setManualCoords(false)}
-                                className={!manualCoords ? "toggle-active" : "toggle-inactive"}
+                                type="button" onClick={() => setLocMode("sl")}
+                                className={locMode === "sl" ? "toggle-active" : "toggle-inactive"}
                                 style={{ flex: 1, fontSize: 11, fontWeight: 700, padding: "10px 12px", borderRadius: 0, border: "none", cursor: "pointer", transition: "all 0.2s", textTransform: "uppercase", letterSpacing: 1 }}
                             >
-                                Sri Lanka Location
+                                Sri Lanka
                             </button>
                             <button
-                                type="button" onClick={() => setManualCoords(true)}
-                                className={manualCoords ? "toggle-active" : "toggle-inactive"}
+                                type="button" onClick={() => setLocMode("place")}
+                                className={locMode === "place" ? "toggle-active" : "toggle-inactive"}
                                 style={{ flex: 1, fontSize: 11, fontWeight: 700, padding: "10px 12px", borderRadius: 0, border: "none", cursor: "pointer", transition: "all 0.2s", textTransform: "uppercase", letterSpacing: 1 }}
                             >
-                                Manual Coordinates
+                                Any Place
+                            </button>
+                            <button
+                                type="button" onClick={() => setLocMode("manual")}
+                                className={locMode === "manual" ? "toggle-active" : "toggle-inactive"}
+                                style={{ flex: 1, fontSize: 11, fontWeight: 700, padding: "10px 12px", borderRadius: 0, border: "none", cursor: "pointer", transition: "all 0.2s", textTransform: "uppercase", letterSpacing: 1 }}
+                            >
+                                Coordinates
                             </button>
                         </div>
 
-                        {!manualCoords ? (
+                        {locMode === "sl" ? (
                             <div style={{ position: "relative" }}>
                                 <label style={labelStyle}>
                                     <MapPin style={{ width: 14, height: 14 }} /> Location
@@ -194,6 +203,19 @@ export default function InputForm() {
                                     </div>
                                 )}
                             </div>
+                        ) : locMode === "place" ? (
+                            <div>
+                                <label style={labelStyle}>
+                                    <MapPin style={{ width: 14, height: 14 }} /> Place
+                                </label>
+                                <input
+                                    type="text" value={place} onChange={(e) => setPlace(e.target.value)}
+                                    placeholder="e.g. Kandy, Sri Lanka" className="input-field" required
+                                />
+                                <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 6 }}>
+                                    Coordinates and time zone (incl. historical/DST) are detected automatically.
+                                </p>
+                            </div>
                         ) : (
                             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
                                 <div>
@@ -206,7 +228,7 @@ export default function InputForm() {
                                 </div>
                                 <div>
                                     <label style={labelStyle}>TZ</label>
-                                    <input type="number" step="0.5" value={timezone} onChange={(e) => setTimezone(e.target.value)} className="input-field" required />
+                                    <input type="number" step="0.25" value={timezone} onChange={(e) => setTimezone(e.target.value)} placeholder="auto" className="input-field" />
                                 </div>
                             </div>
                         )}
