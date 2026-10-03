@@ -22,7 +22,7 @@ export default function InputForm() {
     const [locationKey, setLocationKey] = useState("");
     const [locationSearch, setLocationSearch] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
-    const [locMode, setLocMode] = useState<"sl" | "place" | "manual">("sl");
+    const [locMode, setLocMode] = useState<"sl" | "place" | "manual">("place");
     const [place, setPlace] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
@@ -33,7 +33,7 @@ export default function InputForm() {
     const [horaryDate, setHoraryDate] = useState(today);
     const [horaryTime, setHoraryTime] = useState("");
     const [useHoraryTime, setUseHoraryTime] = useState(false);
-    const [horaryLocation, setHoraryLocation] = useState("");
+    const [horaryPlace, setHoraryPlace] = useState("");
     const [horaryLocationSearch, setHoraryLocationSearch] = useState("");
     const [showHoraryDropdown, setShowHoraryDropdown] = useState(false);
 
@@ -75,7 +75,7 @@ export default function InputForm() {
                 horary_number: parseInt(horaryNumber),
                 date: horaryDate,
                 time: useHoraryTime && horaryTime ? horaryTime : undefined,
-                location: horaryLocation || undefined,
+                place: horaryPlace.trim() || undefined,
                 ayanamsa_type: ayanamsaType,
             });
             setHoraryData(result);
@@ -296,32 +296,15 @@ export default function InputForm() {
                             </button>
                         </div>
 
-                        <div style={{ position: "relative" }}>
-                            <label style={labelStyle}><MapPin style={{ width: 14, height: 14 }} /> Location</label>
-                            <div style={{ position: "relative" }}>
-                                <Search style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, color: "var(--text-muted)" }} />
-                                <input
-                                    type="text" value={horaryLocationSearch}
-                                    onChange={(e) => { setHoraryLocationSearch(e.target.value); setShowHoraryDropdown(true); }}
-                                    onFocus={() => setShowHoraryDropdown(true)}
-                                    placeholder="Search location..."
-                                    className="input-field" style={{ paddingLeft: 40 }}
-                                />
-                            </div>
-                            {showHoraryDropdown && filteredLocations.length > 0 && (
-                                <div className="glass-card" style={{ position: "absolute", zIndex: 40, width: "100%", marginTop: 4, padding: 4, maxHeight: 192, overflowY: "auto" }}>
-                                    {filteredLocations.map((loc) => (
-                                        <button
-                                            key={loc.key} type="button"
-                                            onClick={() => { setHoraryLocation(loc.key); setHoraryLocationSearch(loc.name); setShowHoraryDropdown(false); }}
-                                            className={horaryLocation === loc.key ? "loc-selected" : "loc-unselected"}
-                                            style={{ width: "100%", textAlign: "left", padding: "8px 12px", borderRadius: 8, fontSize: 14, border: "none", cursor: "pointer", transition: "all 0.2s", background: horaryLocation === loc.key ? undefined : "transparent" }}
-                                        >
-                                            {loc.name}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                        <div>
+                            <label style={labelStyle}><MapPin style={{ width: 14, height: 14 }} /> Place</label>
+                            <input
+                                type="text" value={horaryPlace} onChange={(e) => setHoraryPlace(e.target.value)}
+                                placeholder="e.g. Kandy, Sri Lanka" className="input-field" required
+                            />
+                            <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 6 }}>
+                                Coordinates and time zone are detected automatically.
+                            </p>
                         </div>
 
                         <div>
