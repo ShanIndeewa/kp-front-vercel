@@ -19,6 +19,7 @@ export default function AscendantCard({ ascendant, ayanamsa, location, date, tim
         { label: "Star Lord", value: ascendant.star_lord },
         { label: "Sub Lord", value: ascendant.sub_lord },
         { label: "Sub-Sub", value: ascendant.sub_sub_lord || "—" },
+        { label: "Sub-Sub-Sub", value: ascendant.sub_sub_sub_lord || "—" },
     ];
 
     return (

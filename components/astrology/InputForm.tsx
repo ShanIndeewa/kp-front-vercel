@@ -141,7 +141,7 @@ export default function InputForm() {
                                 <label style={labelStyle}>
                                     <Clock style={{ width: 14, height: 14 }} /> Birth Time
                                 </label>
-                                <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="input-field" required />
+                                <input type="time" step="1" value={time} onChange={(e) => setTime(e.target.value)} className="input-field" required />
                             </div>
                         </div>
 
@@ -276,7 +276,7 @@ export default function InputForm() {
                             {useHoraryTime && (
                                 <div>
                                     <label style={labelStyle}><Clock style={{ width: 14, height: 14 }} /> Query Time</label>
-                                    <input type="time" value={horaryTime} onChange={(e) => setHoraryTime(e.target.value)} className="input-field" required />
+                                    <input type="time" step="1" value={horaryTime} onChange={(e) => setHoraryTime(e.target.value)} className="input-field" required />
                                 </div>
                             )}
                         </div>

@@ -159,5 +159,6 @@ export function formatLevelsTitle(levels?: KpLevels | null): string | undefined 
         row("Star", levels.star),
         row("Sub", levels.sub),
         row("Sub-Sub", levels.sub_sub),
+        ...(levels.sub_sub_sub ? [row("Sub-Sub-Sub", levels.sub_sub_sub)] : []),
     ].join("\n");
 }

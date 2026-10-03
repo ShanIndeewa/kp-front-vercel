@@ -372,6 +372,7 @@ export default function AstrologyWheel({
                                     { label: "Star Lord", value: planet.star_lord, style: { color: getPlanetColor(planet.star_lord) } },
                                     { label: "Sub Lord", value: planet.sub_lord, style: { color: getPlanetColor(planet.sub_lord) } },
                                     ...(planet.sub_sub_lord ? [{ label: "Sub-Sub", value: planet.sub_sub_lord, style: { color: "var(--text-secondary)" } }] : []),
+                                    ...(planet.sub_sub_sub_lord ? [{ label: "Sub-Sub-Sub", value: planet.sub_sub_sub_lord, style: { color: "var(--text-secondary)" } }] : []),
                                 ].map((row) => (
                                     <div key={row.label} style={{ display: "flex", justifyContent: "space-between" }}>
                                         <span style={{ color: "var(--text-muted)" }}>{row.label}</span>

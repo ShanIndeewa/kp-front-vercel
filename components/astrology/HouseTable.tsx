@@ -31,7 +31,8 @@ export default function HouseTable({ houses }: HouseTableProps) {
                             <th>Sign Lord</th>
                             <th>Star Lord</th>
                             <th>Sub Lord</th>
-                            <th>Sub-Sub</th>
+                            <th>SSL</th>
+                            <th>SSSL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +97,17 @@ export default function HouseTable({ houses }: HouseTableProps) {
                                             color: getPlanetColor(h.sub_sub_lord),
                                         }}>
                                             {h.sub_sub_lord}
+                                        </span>
+                                    ) : "—"}
+                                </td>
+                                <td title={formatLevelsTitle(h.levels)}>
+                                    {h.sub_sub_sub_lord ? (
+                                        <span style={{
+                                            fontSize: 12, padding: "2px 8px", borderRadius: 999, fontWeight: 500,
+                                            background: `${getPlanetColor(h.sub_sub_sub_lord)}20`,
+                                            color: getPlanetColor(h.sub_sub_sub_lord),
+                                        }}>
+                                            {h.sub_sub_sub_lord}
                                         </span>
                                     ) : "—"}
                                 </td>

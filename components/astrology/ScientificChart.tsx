@@ -64,6 +64,7 @@ interface PlanetLike {
   star_lord: string;
   sub_lord: string;
   sub_sub_lord?: string | null;
+  sub_sub_sub_lord?: string | null;
   retrograde?: boolean;
 }
 
@@ -165,6 +166,7 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
         star_lord: p.star_lord,
         sub_lord: p.sub_lord,
         sub_sub_lord: p.sub_sub_lord,
+        sub_sub_sub_lord: p.sub_sub_sub_lord,
         retrograde: p.retrograde,
       })),
       {
@@ -177,6 +179,7 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
         star_lord: ascendant.star_lord,
         sub_lord: ascendant.sub_lord,
         sub_sub_lord: ascendant.sub_sub_lord,
+        sub_sub_sub_lord: ascendant.sub_sub_sub_lord,
         retrograde: false,
       },
     ];
@@ -272,6 +275,10 @@ export default function ScientificChart({ ascendant, planets, houses }: Scientif
               <div className="flex justify-between">
                 <span className="text-purple-400">Sub-Sub:</span>
                 <span>{planet.sub_sub_lord}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-pink-400">Sub-Sub-Sub:</span>
+                <span>{planet.sub_sub_sub_lord}</span>
               </div>
             </div>
           </div>

@@ -50,6 +50,7 @@ export interface KpLevels {
     star: KpLevel;
     sub: KpLevel;
     sub_sub: KpLevel;
+    sub_sub_sub?: KpLevel;
 }
 
 export interface PlanetPosition {
@@ -62,6 +63,7 @@ export interface PlanetPosition {
     star_lord: string;
     sub_lord: string;
     sub_sub_lord?: string | null;
+    sub_sub_sub_lord?: string | null;
     pada: number;
     levels?: KpLevels | null;
     retrograde?: boolean;
@@ -78,6 +80,7 @@ export interface HouseCusp {
     star_lord: string;
     sub_lord: string;
     sub_sub_lord?: string | null;
+    sub_sub_sub_lord?: string | null;
     pada: number;
     levels?: KpLevels | null;
 }
@@ -91,6 +94,7 @@ export interface AscendantInfo {
     star_lord: string;
     sub_lord: string;
     sub_sub_lord?: string | null;
+    sub_sub_sub_lord?: string | null;
 }
 
 export interface AyanamsaInfo {

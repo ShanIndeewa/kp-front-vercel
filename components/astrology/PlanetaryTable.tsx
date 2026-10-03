@@ -30,7 +30,8 @@ export default function PlanetaryTable({ planets }: PlanetaryTableProps) {
                             <th>Longitude</th>
                             <th>Star Lord</th>
                             <th>Sub Lord</th>
-                            <th>Sub-Sub</th>
+                            <th>SSL</th>
+                            <th>SSSL</th>
                             <th>R</th>
                         </tr>
                     </thead>
@@ -86,6 +87,9 @@ export default function PlanetaryTable({ planets }: PlanetaryTableProps) {
                                 </td>
                                 <td title={formatLevelsTitle(p.levels)} style={{ fontSize: 12, fontWeight: 600, color: p.sub_sub_lord ? getPlanetColor(p.sub_sub_lord) : "var(--text-muted)" }}>
                                     {p.sub_sub_lord || "—"}
+                                </td>
+                                <td title={formatLevelsTitle(p.levels)} style={{ fontSize: 12, fontWeight: 600, color: p.sub_sub_sub_lord ? getPlanetColor(p.sub_sub_sub_lord) : "var(--text-muted)" }}>
+                                    {p.sub_sub_sub_lord || "—"}
                                 </td>
                                 <td>
                                     {p.retrograde && (
