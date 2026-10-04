@@ -22,6 +22,7 @@ export default function ChartPage() {
     const horaryData = useAppStore((s) => s.horaryData);
     const [showForm, setShowForm] = useState(false); // birth-data sidebar
     const [hydrated, setHydrated] = useState(false);
+    const [chartView, setChartView] = useState<"south" | "wheel">("south");
 
     // Wait for zustand hydration
     useEffect(() => {
@@ -73,12 +74,12 @@ export default function ChartPage() {
             <Navbar />
 
             {/* Page Content */}
-            <div style={{ position: "relative", zIndex: 10, maxWidth: 1800, margin: "0 auto", padding: "96px 16px 60px" }}>
+            <div style={{ position: "relative", zIndex: 10, maxWidth: 1800, margin: "0 auto", padding: "84px 16px 40px" }}>
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32, flexWrap: "wrap", gap: 16 }}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 16 }}
                 >
                     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                         <Link
@@ -93,7 +94,7 @@ export default function ChartPage() {
                             <ArrowLeft style={{ width: 18, height: 18 }} />
                         </Link>
                         <div>
-                            <h1 className="gradient-text" style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, fontFamily: "'Playfair Display', serif" }}>
+                            <h1 className="gradient-text" style={{ fontSize: "clamp(20px, 2.2vw, 26px)", fontWeight: 700, fontFamily: "'Playfair Display', serif" }}>
                                 Chart Results
                             </h1>
                             <p style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 2 }}>
@@ -119,7 +120,7 @@ export default function ChartPage() {
                 </motion.div>
 
                 <div
-                    style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 24, alignItems: "start", marginBottom: 32 }}
+                    style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 24, alignItems: "start", marginBottom: 20 }}
                     className={showForm ? "xl:!grid-cols-[380px_minmax(0,1fr)]" : ""}
                 >
                     {/* Hideable left sidebar: birth data changes only */}
@@ -134,15 +135,37 @@ export default function ChartPage() {
                         className="lg:!grid-cols-[minmax(0,5fr)_minmax(0,6fr)]"
                     >
                         {/* Chart + ruling planets */}
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
-                            <SouthIndianChart
-                                planets={data.planets}
-                                houses={data.houses}
-                                location={data.location}
-                                ayanamsa={data.ayanamsa}
-                                date={data.date}
-                                time={displayTime}
-                            />
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 0, maxWidth: 640 }}>
+                            <div style={{ display: "flex", border: "1px solid var(--border-glass)", alignSelf: "flex-start" }}>
+                                {([["south", "South Indian"], ["wheel", "Wheel"]] as const).map(([id, label]) => (
+                                    <button
+                                        key={id} type="button" onClick={() => setChartView(id)}
+                                        style={{
+                                            padding: "6px 16px", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase",
+                                            border: "none", cursor: "pointer", transition: "all 0.2s",
+                                            background: chartView === id ? "var(--accent-gold)" : "transparent",
+                                            color: chartView === id ? "#111" : "var(--text-muted)",
+                                        }}
+                                    >
+                                        {label}
+                                    </button>
+                                ))}
+                            </div>
+                            {chartView === "south" ? (
+                                <SouthIndianChart
+                                    planets={data.planets}
+                                    houses={data.houses}
+                                    location={data.location}
+                                    ayanamsa={data.ayanamsa}
+                                    date={data.date}
+                                    time={displayTime}
+                                />
+                            ) : (
+                                <div className="glass-card" style={{ padding: 0, width: "100%", aspectRatio: "1 / 1", display: "flex", position: "relative", overflow: "hidden", borderRadius: 4 }}>
+                                    <ScientificChart ascendant={data.ascendant} planets={data.planets} houses={data.houses} />
+                                </div>
+                            )}
+                            <AscendantCard ascendant={data.ascendant} ayanamsa={data.ayanamsa} location={data.location} date={data.date} time={displayTime} />
                             <RulingPlanetsPanel location={data.location} ayanamsa={data.ayanamsa} />
 
                             {horaryData && (
@@ -176,20 +199,6 @@ export default function ChartPage() {
                         </motion.div>
                     </div>
                 </div>
-
-                {/* Wheel + Ascendant */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 }}
-                    style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24, marginBottom: 32 }}
-                    className="lg:!grid-cols-[3fr_2fr]"
-                >
-                    <div className="glass-card" style={{ padding: 0, minHeight: 520, display: "flex", position: "relative", overflow: "hidden", borderRadius: 16 }}>
-                        <ScientificChart ascendant={data.ascendant} planets={data.planets} houses={data.houses} />
-                    </div>
-                    <AscendantCard ascendant={data.ascendant} ayanamsa={data.ayanamsa} location={data.location} date={data.date} time={displayTime} />
-                </motion.div>
 
                 {/* Dasha */}
                 <motion.div
