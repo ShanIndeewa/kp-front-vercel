@@ -12,6 +12,8 @@ import PlanetaryTable from "@/components/astrology/PlanetaryTable";
 import HouseTable from "@/components/astrology/HouseTable";
 import AscendantCard from "@/components/astrology/AscendantCard";
 import DashaDisplay from "@/components/astrology/DashaDisplay";
+import LeftSidebar from "@/components/astrology/LeftSidebar";
+import type { DashaInfo } from "@/types/api";
 import { useAppStore } from "@/lib/store";
 
 export default function ChartPage() {
@@ -70,7 +72,7 @@ export default function ChartPage() {
             <Navbar />
 
             {/* Page Content */}
-            <div style={{ position: "relative", zIndex: 10, maxWidth: 1280, margin: "0 auto", padding: "96px 16px 60px" }}>
+            <div style={{ position: "relative", zIndex: 10, maxWidth: 1600, margin: "0 auto", padding: "96px 16px 60px" }}>
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -128,6 +130,19 @@ export default function ChartPage() {
                     </motion.div>
                 )}
 
+                <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 24, alignItems: "start" }} className="lg:!grid-cols-[320px_minmax(0,1fr)]">
+                    <div className="lg:sticky" style={{ top: 88 }}>
+                        <LeftSidebar
+                            ascendant={data.ascendant}
+                            planets={data.planets}
+                            ayanamsa={data.ayanamsa}
+                            location={data.location}
+                            date={data.date}
+                            time={displayTime}
+                            dasha={(chartData?.dasha || horaryData?.dasha || null) as DashaInfo | null}
+                        />
+                    </div>
+                    <div style={{ minWidth: 0 }}>
                 {/* Wheel + Ascendant */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -187,6 +202,8 @@ export default function ChartPage() {
                 >
                     <DashaDisplay dasha={chartData?.dasha || horaryData?.dasha || null} />
                 </motion.div>
+                    </div>
+                </div>
             </div>
         </main>
     );
