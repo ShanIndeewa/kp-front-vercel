@@ -3,29 +3,30 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Settings2, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import InputForm from "@/components/astrology/InputForm";
 import ScientificChart from "@/components/astrology/ScientificChart";
+import AscendantCard from "@/components/astrology/AscendantCard";
+import SouthIndianChart from "@/components/astrology/SouthIndianChart";
+import RulingPlanetsPanel from "@/components/astrology/RulingPlanetsPanel";
 import PlanetaryTable from "@/components/astrology/PlanetaryTable";
 import HouseTable from "@/components/astrology/HouseTable";
-import AscendantCard from "@/components/astrology/AscendantCard";
 import DashaDisplay from "@/components/astrology/DashaDisplay";
-import LeftSidebar from "@/components/astrology/LeftSidebar";
-import type { DashaInfo } from "@/types/api";
 import { useAppStore } from "@/lib/store";
 
 export default function ChartPage() {
     const router = useRouter();
     const chartData = useAppStore((s) => s.chartData);
     const horaryData = useAppStore((s) => s.horaryData);
-    const [showForm, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(false); // birth-data sidebar
     const [hydrated, setHydrated] = useState(false);
 
     // Wait for zustand hydration
     useEffect(() => {
         setHydrated(true);
+        if (window.innerWidth >= 1500) setShowForm(true);
     }, []);
 
     const data = chartData || horaryData;
@@ -72,7 +73,7 @@ export default function ChartPage() {
             <Navbar />
 
             {/* Page Content */}
-            <div style={{ position: "relative", zIndex: 10, maxWidth: 1600, margin: "0 auto", padding: "96px 16px 60px" }}>
+            <div style={{ position: "relative", zIndex: 10, maxWidth: 1800, margin: "0 auto", padding: "96px 16px 60px" }}>
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -112,86 +113,82 @@ export default function ChartPage() {
                             color: "var(--text-secondary)", cursor: "pointer", transition: "all 0.2s",
                         }}
                     >
-                        <Settings2 style={{ width: 16, height: 16 }} />
-                        Change Details
-                        {showForm ? <ChevronUp style={{ width: 14, height: 14 }} /> : <ChevronDown style={{ width: 14, height: 14 }} />}
+                        {showForm ? <PanelLeftClose style={{ width: 16, height: 16 }} /> : <PanelLeftOpen style={{ width: 16, height: 16 }} />}
+                        Birth Data
                     </button>
                 </motion.div>
 
-                {/* Collapsible Form */}
-                {showForm && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        style={{ marginBottom: 32, overflow: "hidden" }}
-                    >
-                        <InputForm />
-                    </motion.div>
-                )}
+                <div
+                    style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 24, alignItems: "start", marginBottom: 32 }}
+                    className={showForm ? "xl:!grid-cols-[380px_minmax(0,1fr)]" : ""}
+                >
+                    {/* Hideable left sidebar: birth data changes only */}
+                    {showForm && (
+                        <aside className="xl:sticky" style={{ top: 88 }}>
+                            <InputForm />
+                        </aside>
+                    )}
 
-                <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 24, alignItems: "start" }} className="lg:!grid-cols-[320px_minmax(0,1fr)]">
-                    <div className="lg:sticky" style={{ top: 88 }}>
-                        <LeftSidebar
-                            ascendant={data.ascendant}
-                            planets={data.planets}
-                            ayanamsa={data.ayanamsa}
-                            location={data.location}
-                            date={data.date}
-                            time={displayTime}
-                            dasha={(chartData?.dasha || horaryData?.dasha || null) as DashaInfo | null}
-                        />
+                    <div
+                        style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 24, alignItems: "start", minWidth: 0 }}
+                        className="lg:!grid-cols-[minmax(0,5fr)_minmax(0,6fr)]"
+                    >
+                        {/* Chart + ruling planets */}
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
+                            <SouthIndianChart
+                                planets={data.planets}
+                                houses={data.houses}
+                                location={data.location}
+                                ayanamsa={data.ayanamsa}
+                                date={data.date}
+                                time={displayTime}
+                            />
+                            <RulingPlanetsPanel location={data.location} ayanamsa={data.ayanamsa} />
+
+                            {horaryData && (
+                                <div className="glass-card" style={{ padding: 20 }}>
+                                    <h4 className="gradient-text" style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>
+                                        Horary Details
+                                    </h4>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                                        {[
+                                            { label: "Number", value: `#${horaryData.horary.number}`, color: "var(--accent-gold)", bold: true },
+                                            { label: "Calc. Time", value: horaryData.calculated_time, color: "var(--accent-cyan)", mono: true },
+                                            { label: "Target Asc", value: horaryData.horary.target_ascendant_dms, color: "var(--text-secondary)" },
+                                            { label: "Sign", value: horaryData.horary.sign, color: "var(--text-primary)" },
+                                        ].map((row) => (
+                                            <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 14 }}>
+                                                <span style={{ color: "var(--text-muted)" }}>{row.label}</span>
+                                                <span style={{ color: row.color, fontWeight: row.bold ? 700 : 500, fontFamily: row.mono ? "monospace" : "inherit" }}>
+                                                    {row.value}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </motion.div>
+
+                        {/* Tables on the right */}
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ display: "flex", flexDirection: "column", gap: 24, minWidth: 0 }}>
+                            <HouseTable houses={data.houses} />
+                            <PlanetaryTable planets={data.planets} />
+                        </motion.div>
                     </div>
-                    <div style={{ minWidth: 0 }}>
+                </div>
+
                 {/* Wheel + Ascendant */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
+                    transition={{ delay: 0.25 }}
                     style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24, marginBottom: 32 }}
                     className="lg:!grid-cols-[3fr_2fr]"
                 >
                     <div className="glass-card" style={{ padding: 0, minHeight: 520, display: "flex", position: "relative", overflow: "hidden", borderRadius: 16 }}>
                         <ScientificChart ascendant={data.ascendant} planets={data.planets} houses={data.houses} />
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-                        <AscendantCard ascendant={data.ascendant} ayanamsa={data.ayanamsa} location={data.location} date={data.date} time={displayTime} />
-
-                        {horaryData && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card" style={{ padding: 20 }}>
-                                <h4 className="gradient-text" style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>
-                                    Horary Details
-                                </h4>
-                                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                                    {[
-                                        { label: "Number", value: `#${horaryData.horary.number}`, color: "var(--accent-gold)", bold: true },
-                                        { label: "Calc. Time", value: horaryData.calculated_time, color: "var(--accent-cyan)", mono: true },
-                                        { label: "Target Asc", value: horaryData.horary.target_ascendant_dms, color: "var(--text-secondary)" },
-                                        { label: "Sign", value: horaryData.horary.sign, color: "var(--text-primary)" },
-                                    ].map((row) => (
-                                        <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 14 }}>
-                                            <span style={{ color: "var(--text-muted)" }}>{row.label}</span>
-                                            <span style={{ color: row.color, fontWeight: row.bold ? 700 : 500, fontFamily: row.mono ? "monospace" : "inherit" }}>
-                                                {row.value}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </motion.div>
-                        )}
-                    </div>
-                </motion.div>
-
-                {/* Tables */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24, marginBottom: 32 }}
-                    className="xl:!grid-cols-2"
-                >
-                    <PlanetaryTable planets={data.planets} />
-                    <HouseTable houses={data.houses} />
+                    <AscendantCard ascendant={data.ascendant} ayanamsa={data.ayanamsa} location={data.location} date={data.date} time={displayTime} />
                 </motion.div>
 
                 {/* Dasha */}
@@ -202,8 +199,6 @@ export default function ChartPage() {
                 >
                     <DashaDisplay dasha={chartData?.dasha || horaryData?.dasha || null} />
                 </motion.div>
-                    </div>
-                </div>
             </div>
         </main>
     );
