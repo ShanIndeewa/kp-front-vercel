@@ -1,11 +1,12 @@
 // ========== REQUEST TYPES ==========
 
-export type AyanamsaType = 'old' | 'new' | 'khullar' | 'manual';
+export type AyanamsaType = 'old' | 'new' | 'khullar' | 'straight' | 'manual';
 
 export const AYANAMSA_OPTIONS: { value: AyanamsaType; label: string }[] = [
     { value: 'new', label: 'KP New (Balachandran)' },
     { value: 'old', label: 'KP Old (KSK)' },
     { value: 'khullar', label: 'KP Khullar' },
+    { value: 'straight', label: 'KP Straight' },
 ];
 
 export interface CalculationRequest {
